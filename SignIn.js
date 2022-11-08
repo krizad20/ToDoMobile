@@ -121,7 +121,7 @@ export default function SignIn() {
             width: 30,
             height: 30,
             justifyContent: 'center',
-            fontFamily: 'Kanit_900Black'
+            fontFamily: 'Kanit_400Regular'
 
         },
         buttonContainer: {
