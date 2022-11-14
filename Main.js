@@ -130,32 +130,47 @@ export default function Main() {
     };
 
     const showDatepicker = () => {
-        DateTimePickerAndroid.open({
-            value: new Date(selected.when),
-            onChange: onChangeDate,
-            mode: 'date',
-            is24Hour: true,
-        });
+        if (modalVisible) {
+            DateTimePickerAndroid.open({
+                value: new Date(selected.when),
+                onChange: onChangeDate,
+                mode: 'date',
+                is24Hour: true,
+            });
+        }
+        else if (modalAddVisible) {
+            DateTimePickerAndroid.open({
+                value: new Date(),
+                onChange: onChangeDate,
+                mode: 'date',
+                is24Hour: true,
+            });
+        }
+
     };
 
     const showTimepicker = () => {
-        DateTimePickerAndroid.open({
-            value: new Date(selected.when),
-            onChange: onChangeTime,
-            mode: 'time',
-            is24Hour: true,
-        });
+        if (modalVisible) {
+            DateTimePickerAndroid.open({
+                value: new Date(selected.when),
+                onChange: onChangeTime,
+                mode: 'time',
+                is24Hour: true,
+            });
+        }
+        else if (modalAddVisible) {
+            DateTimePickerAndroid.open({
+                value: new Date(),
+                onChange: onChangeTime,
+                mode: 'time',
+                is24Hour: true,
+            });
+        }
+
     };
 
 
-    const [data, setData] = useState([
-        { id: 1, name: "Comunity", image: "https://img.icons8.com/clouds/100/000000/groups.png", when: 124.711 },
-        { id: 2, name: "Housing", image: "https://img.icons8.com/color/100/000000/real-estate.png", when: 234.722 },
-        { id: 3, name: "Jobs", image: "https://img.icons8.com/color/100/000000/find-matching-job.png", when: 324.723 },
-        { id: 4, name: "Personal", image: "https://img.icons8.com/clouds/100/000000/employee-card.png", when: 154.573 },
-        { id: 5, name: "For sale", image: "https://img.icons8.com/color/100/000000/land-sales.png", when: 124.678 },
-    ]
-    )
+    const [data, setData] = useState([])
 
     const styles = StyleSheet.create({
         header: {
@@ -484,6 +499,7 @@ export default function Main() {
         setAddDate(toThaiDate(new Date()))
         setAddTime(toThaiTime(new Date()))
         setModalAddVisible(true)
+
     }
 
     const updateActivity = () => {
@@ -578,10 +594,6 @@ export default function Main() {
 
 
 
-
-
-
-
     return (
 
         <View style={styles.container}>
@@ -616,105 +628,107 @@ export default function Main() {
                                 </View>
 
                             </View>
-                            <Modal
-                                animationType={'fade'}
-                                transparent={true}
-                                onRequestClose={() => setModalVisible(false)}
-                                visible={modalVisible}>
 
-                                <View style={styles.popupOverlay}>
-                                    <View style={styles.popup}>
-                                        <View style={styles.popupContent}>
-                                            <ScrollView contentContainerStyle={styles.modalInfo}>
-                                                <View style={styles.inputContainer}>
-                                                    <Text style={styles.inputLabel}>ชื่อกิจกรรม</Text>
-                                                    <TextInput style={styles.inputs}
-                                                        placeholder="ชื่อกิจกรรม"
-                                                        underlineColorAndroid='transparent'
-                                                        value={selectedName}
-
-                                                        onChangeText={(name) => setSelectedName(name)} />
-                                                </View>
-                                                <View style={styles.inputContainer}>
-                                                    <Text style={styles.inputLabel}>วัน เวลา</Text>
-                                                </View>
-                                                <View style={styles.DateTimeInput}>
-                                                    <Text style={styles.dateText}>{selectedDate}</Text>
-                                                    <TouchableHighlight style={styles.btnSelect} onPress={() => { showDatepicker() }}>
-                                                        <Text style={styles.selectText}>เลือกวันที่</Text>
-                                                    </TouchableHighlight>
-                                                </View>
-                                                <View style={styles.DateTimeInput}>
-                                                    <Text style={styles.dateText}>{selectedTime}</Text>
-                                                    <TouchableHighlight style={styles.btnSelect} onPress={() => { showTimepicker() }}>
-                                                        <Text style={styles.selectText}>เลือกเวลา</Text>
-                                                    </TouchableHighlight>
-                                                </View>
-                                            </ScrollView>
-                                        </View>
-                                        <View style={styles.popupButtons}>
-                                            <TouchableHighlight style={styles.btnSave} onPress={() => { updateActivity() }}>
-                                                <Text style={styles.saveText}>บันทึก</Text>
-                                            </TouchableHighlight>
-                                            <TouchableHighlight style={styles.btnCancel} onPress={() => { setModalVisible(false) }}>
-                                                <Text style={styles.cancelText}>ยกเลิก</Text>
-                                            </TouchableHighlight>
-                                        </View>
-                                    </View>
-                                </View>
-                            </Modal>
-
-                            <Modal
-                                animationType={'fade'}
-                                transparent={true}
-                                onRequestClose={() => setModalAddVisible(false)}
-                                visible={modalAddVisible}>
-
-                                <View style={styles.popupOverlay}>
-                                    <View style={styles.popup}>
-                                        <View style={styles.popupContent}>
-                                            <ScrollView contentContainerStyle={styles.modalInfo}>
-                                                <View style={styles.inputContainer}>
-                                                    <Text style={styles.inputLabel}>ชื่อกิจกรรม</Text>
-                                                    <TextInput style={styles.inputs}
-                                                        placeholder="ชื่อกิจกรรม"
-                                                        underlineColorAndroid='transparent'
-                                                        value={addName}
-                                                        onChangeText={(name) => setAddName(name)} />
-                                                </View>
-                                                <View style={styles.inputContainer}>
-                                                    <Text style={styles.inputLabel}>วัน เวลา</Text>
-                                                </View>
-                                                <View style={styles.DateTimeInput}>
-                                                    <Text style={styles.dateText}>{addDate}</Text>
-                                                    <TouchableHighlight style={styles.btnSelect} onPress={() => { showDatepicker() }}>
-                                                        <Text style={styles.selectText}>เลือกวันที่</Text>
-                                                    </TouchableHighlight>
-                                                </View>
-                                                <View style={styles.DateTimeInput}>
-                                                    <Text style={styles.dateText}>{addTime}</Text>
-                                                    <TouchableHighlight style={styles.btnSelect} onPress={() => { showTimepicker() }}>
-                                                        <Text style={styles.selectText}>เลือกเวลา</Text>
-                                                    </TouchableHighlight>
-                                                </View>
-                                            </ScrollView>
-                                        </View>
-                                        <View style={styles.popupButtons}>
-                                            <TouchableHighlight style={styles.btnSave} onPress={() => { addActivity() }}>
-                                                <Text style={styles.saveText}>บันทึก</Text>
-                                            </TouchableHighlight>
-                                            <TouchableHighlight style={styles.btnCancel} onPress={() => { setModalAddVisible(false) }}>
-                                                <Text style={styles.cancelText}>ยกเลิก</Text>
-                                            </TouchableHighlight>
-                                        </View>
-                                    </View>
-                                </View>
-                            </Modal>
 
 
                         </View>
                     )
                 }} />
+
+            <Modal
+                animationType={'fade'}
+                transparent={true}
+                onRequestClose={() => setModalVisible(false)}
+                visible={modalVisible}>
+
+                <View style={styles.popupOverlay}>
+                    <View style={styles.popup}>
+                        <View style={styles.popupContent}>
+                            <ScrollView contentContainerStyle={styles.modalInfo}>
+                                <View style={styles.inputContainer}>
+                                    <Text style={styles.inputLabel}>ชื่อกิจกรรม</Text>
+                                    <TextInput style={styles.inputs}
+                                        placeholder="ชื่อกิจกรรม"
+                                        underlineColorAndroid='transparent'
+                                        value={selectedName}
+                                        autoFocus={true}
+                                        onChangeText={(name) => setSelectedName(name)} />
+                                </View>
+                                <View style={styles.inputContainer}>
+                                    <Text style={styles.inputLabel}>วัน เวลา</Text>
+                                </View>
+                                <View style={styles.DateTimeInput}>
+                                    <Text style={styles.dateText}>{selectedDate}</Text>
+                                    <TouchableHighlight style={styles.btnSelect} onPress={() => { showDatepicker() }}>
+                                        <Text style={styles.selectText}>เลือกวันที่</Text>
+                                    </TouchableHighlight>
+                                </View>
+                                <View style={styles.DateTimeInput}>
+                                    <Text style={styles.dateText}>{selectedTime}</Text>
+                                    <TouchableHighlight style={styles.btnSelect} onPress={() => { showTimepicker() }}>
+                                        <Text style={styles.selectText}>เลือกเวลา</Text>
+                                    </TouchableHighlight>
+                                </View>
+                            </ScrollView>
+                        </View>
+                        <View style={styles.popupButtons}>
+                            <TouchableHighlight style={styles.btnSave} onPress={() => { updateActivity() }}>
+                                <Text style={styles.saveText}>บันทึก</Text>
+                            </TouchableHighlight>
+                            <TouchableHighlight style={styles.btnCancel} onPress={() => { setModalVisible(false) }}>
+                                <Text style={styles.cancelText}>ยกเลิก</Text>
+                            </TouchableHighlight>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
+            <Modal
+                animationType={'fade'}
+                transparent={true}
+                onRequestClose={() => setModalAddVisible(false)}
+                visible={modalAddVisible}>
+
+                <View style={styles.popupOverlay}>
+                    <View style={styles.popup}>
+                        <View style={styles.popupContent}>
+                            <ScrollView contentContainerStyle={styles.modalInfo}>
+                                <View style={styles.inputContainer}>
+                                    <Text style={styles.inputLabel}>ชื่อกิจกรรม</Text>
+                                    <TextInput style={styles.inputs}
+                                        placeholder="ชื่อกิจกรรม"
+                                        underlineColorAndroid='transparent'
+                                        value={addName}
+                                        onChangeText={(name) => setAddName(name)} />
+                                </View>
+                                <View style={styles.inputContainer}>
+                                    <Text style={styles.inputLabel}>วัน เวลา</Text>
+                                </View>
+                                <View style={styles.DateTimeInput}>
+                                    <Text style={styles.dateText}>{addDate}</Text>
+                                    <TouchableHighlight style={styles.btnSelect} onPress={() => { showDatepicker() }}>
+                                        <Text style={styles.selectText}>เลือกวันที่</Text>
+                                    </TouchableHighlight>
+                                </View>
+                                <View style={styles.DateTimeInput}>
+                                    <Text style={styles.dateText}>{addTime}</Text>
+                                    <TouchableHighlight style={styles.btnSelect} onPress={() => { showTimepicker() }}>
+                                        <Text style={styles.selectText}>เลือกเวลา</Text>
+                                    </TouchableHighlight>
+                                </View>
+                            </ScrollView>
+                        </View>
+                        <View style={styles.popupButtons}>
+                            <TouchableHighlight style={styles.btnSave} onPress={() => { addActivity() }}>
+                                <Text style={styles.saveText}>บันทึก</Text>
+                            </TouchableHighlight>
+                            <TouchableHighlight style={styles.btnCancel} onPress={() => { setModalAddVisible(false) }}>
+                                <Text style={styles.cancelText}>ยกเลิก</Text>
+                            </TouchableHighlight>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
             {/* success snackbar */}
             <Snackbar
                 visible={successVisible}
