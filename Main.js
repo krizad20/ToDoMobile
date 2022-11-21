@@ -608,7 +608,11 @@ export default function Main() {
             <FlatList
                 style={styles.contentList}
                 columnWrapperStyle={styles.listContainer}
-                data={data}
+                data={
+                    data.sort((a, b) => {
+                        return new Date(a.when) - new Date(b.when)
+                    })
+                }
                 keyExtractor={(item) => {
                     return item.id;
                 }}
